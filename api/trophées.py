@@ -7,7 +7,7 @@ class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
             # Récupère le token NPSSO depuis les variables d'environnement
-            npsso_token = os.environ.get('NPSSO_TOKEN')
+            npsso_token = os.environ.get('ytRANQi9XCazRZ6NsTFYDP39wUAOsNIOnN2Dcp7yKPpb5iXCVXfdu8bzwVzGzyKT')
             
             if not npsso_token:
                 self.send_response(400)
