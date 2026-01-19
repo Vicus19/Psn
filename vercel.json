@@ -1,8 +1,7 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/trophées",
-      "destination": "/api/trophées.py"
+  "functions": {
+    "api/trophies.py": {
+      "runtime": "python3.9"
     }
-  ]
+  }
 }
