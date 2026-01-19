@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "API/trophies.py",
+      "src": "API/trophées.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/API/trophies",
-      "dest": "API/trophies.py"
+      "src": "/API/trophées",
+      "dest": "API/trophées.py"
     }
   ]
 }
