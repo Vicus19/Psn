@@ -1,15 +1,8 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/trophées.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/trophées",
-      "dest": "api/trophées.py"
+      "source": "/api/trophées",
+      "destination": "/api/trophées.py"
     }
   ]
 }
