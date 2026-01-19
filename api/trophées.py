@@ -1,3 +1,6 @@
+ PY
+Copier
+
 from http.server import BaseHTTPRequestHandler
 import json
 from psnawp_api import PSNAWP
@@ -23,34 +26,30 @@ class handler(BaseHTTPRequestHandler):
             client = psnawp.me()
             
             # Récupère les informations du profil
-            profile = client.profile()
+            online_id = client.online_id
+            account_id = client.account_id
+            
+            # Récupère le résumé des trophées
             trophy_summary = client.trophy_summary()
-            
-            # Récupère les jeux récents
-            title_stats = client.title_stats(limit=5)
-            recent_games = []
-            
-            for game in title_stats:
-                recent_games.append({
-                    'name': game.get('name', 'Jeu inconnu'),
-                    'play_duration': game.get('play_duration', 'N/A')
-                })
             
             # Prépare la réponse JSON
             response_data = {
-                'online_id': profile.get('onlineId', 'N/A'),
-                'level': trophy_summary.get('accountLevel', 0),
+                'online_id': online_id,
+                'account_id': account_id,
+                'level': trophy_summary.trophy_level,
+                'progress': trophy_summary.progress,
                 'trophies': {
-                    'platinum': trophy_summary.get('earnedTrophies', {}).get('platinum', 0),
-                    'gold': trophy_summary.get('earnedTrophies', {}).get('gold', 0),
-                    'silver': trophy_summary.get('earnedTrophies', {}).get('silver', 0),
-                    'bronze': trophy_summary.get('earnedTrophies', {}).get('bronze', 0)
+                    'platinum': trophy_summary.earned_trophies.platinum,
+                    'gold': trophy_summary.earned_trophies.gold,
+                    'silver': trophy_summary.earned_trophies.silver,
+                    'bronze': trophy_summary.earned_trophies.bronze
                 },
-                'total_trophies': trophy_summary.get('earnedTrophies', {}).get('bronze', 0) + 
-                                 trophy_summary.get('earnedTrophies', {}).get('silver', 0) + 
-                                 trophy_summary.get('earnedTrophies', {}).get('gold', 0) + 
-                                 trophy_summary.get('earnedTrophies', {}).get('platinum', 0),
-                'recent_games': recent_games[:3]  # Top 3 jeux récents
+                'total_trophies': (
+                    trophy_summary.earned_trophies.platinum + 
+                    trophy_summary.earned_trophies.gold + 
+                    trophy_summary.earned_trophies.silver + 
+                    trophy_summary.earned_trophies.bronze
+                )
             }
             
             # Envoie la réponse
@@ -67,4 +66,3 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({
                 'error': str(e)
             }).encode())
-
